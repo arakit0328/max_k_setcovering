@@ -199,7 +199,7 @@ void SCPsolution::initialize(SCPinstance &pData)
 
 
 // CSに含まれない列から最大スコアのものを選んで返す
-int SCPsolution::get_column_maxscore(SCPinstance &pData)
+int SCPsolution::get_column_maxscore(SCPinstance &pData, Rand& rnd)
 {
   std::vector<int> maxCols;
   int maxScore = 0, maxc = 0;
@@ -231,7 +231,7 @@ int SCPsolution::get_column_maxscore(SCPinstance &pData)
 
 
 // CSに含まれない列から alpha * 最大スコア 以上のものを選んで返す
-int SCPsolution::get_column_grasp(SCPinstance &pData, double alpha)
+int SCPsolution::get_column_grasp(SCPinstance &pData, double alpha, Rand& rnd)
 {
   std::vector<int> Cols;
   int maxScore = 0, minScore = pData.numRows;

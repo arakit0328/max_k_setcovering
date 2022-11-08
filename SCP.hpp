@@ -6,6 +6,7 @@
 //---------------------------------------------------------------------------
 #pragma once
 
+#include "Random.hpp"
 #include <cstdio>
 
 //
@@ -71,10 +72,10 @@ public:
   void initialize(SCPinstance &pData);
 
   // CSに含まれない列から最大スコアのものを選んで返す
-  int get_column_maxscore(SCPinstance &pData);
+  int get_column_maxscore(SCPinstance &pData, Rand& rnd);
 
   // CSに含まれない列から alpha * 最大スコア 以上のものを選んで返す
-  int get_column_grasp(SCPinstance &pData, double alpha);
+  int get_column_grasp(SCPinstance &pData, double alpha, Rand& rnd);
 
   // CSに列cを追加する
   void add_column(SCPinstance &pData, int c);
