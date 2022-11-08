@@ -1,0 +1,38 @@
+2022/11/01 荒木
+
+コンパイルの方法
+
+make が使える場合は
+
+  % make
+
+とすれば，実行ファイル rnkc_main ができる。
+
+make が使えない場合は
+
+  % c++ -o rnkc_main rnkc_main.cpp SCP.cpp
+
+とする。
+
+
+実行方法
+
+インスタンスのファイルを同じディレクトリに置く。
+以下の様に実行する。
+
+  % ./rnkc_main scp41.txt 34
+
+
+何をしているかは rnkc_main.cpp を見てください。
+
+
+参考：
+http://mauricio.resende.info/src/index.html
+
+
+
+2022/11/02 荒木
+
+MkSP 解を管理するためのクラス（構造体）SCPsolution を作成。
+だいぶ見た目が変わった。やっていることは同じです。
+あと，GRASPで解を構成する方法を実装。
