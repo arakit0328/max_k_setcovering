@@ -2,7 +2,7 @@ CC = c++
 CFLAGS = -Wall -g
 FLAGS = -Wall -g
 LIBS = -lm
-OBJS = SCP.o rnkc_main.o
+OBJS = SCPv.o rnkc_main.o
 
 
 rnkc_main: $(OBJS)

@@ -1,4 +1,4 @@
-#include "SCP.hpp"
+#include "SCPv.hpp"
 #include "Random.hpp"
 #include <cstdlib>
 #include <iostream>
@@ -9,17 +9,11 @@
 #include <random>
 using namespace std;
 
-// 乱数発生クラス Random.hpp を参照
-// rnd() で整数乱数
-// rnd(a, b) とするとa以上b以下の一様乱数を生成できる
-// Rand rnd;
-// mt19937_64 rnd(seed);
-
 // greedy_neighborhood_search で使う繰り返しの回数
-int niter = 500;
+int niter = 1000;
 
 // graspで使う alpha の値
-double alpha = 0.95;
+double alpha = 0.85;
 
 // 貪欲法：スコア最大の列をK列選ぶ
 // 引数の cs に結果が入る
@@ -28,7 +22,7 @@ void greedy_construction(SCPinstance &pData, SCPsolution &cs, Rand &rnd)
   int maxc;
 
   cs.initialize(pData);
-  for (int k = 1; k <= cs.K; k++)
+  for (int k = 0; k < cs.K; k++)
   {
     maxc = cs.get_column_maxscore(pData, rnd);
     cs.add_column(pData, maxc);
@@ -43,7 +37,7 @@ void grasp_construction(SCPinstance &pData, SCPsolution &cs, double alpha, Rand 
   cs.initialize(pData);
 
   int c;
-  for (int k = 1; k <= cs.K; k++)
+  for (int k = 0; k < cs.K; k++)
   {
     c = cs.get_column_grasp(pData, alpha, rnd);
     cs.add_column(pData, c);
@@ -52,12 +46,12 @@ void grasp_construction(SCPinstance &pData, SCPsolution &cs, double alpha, Rand 
 
 
 // 配列の順序をランダムに入れ替える
-void random_permutation(int *A, int n, Rand& rnd)
+void random_permutation(vector<int>& A, int n, Rand& rnd)
 {
   int j;
-  for (int i = 1; i <= n-1; ++i)
+  for (int i = 0; i < n-1; ++i)
   {
-    j = rnd(i, n);
+    j = rnd(i, n-1);
     swap(A[i], A[j]);
   }
 }
@@ -70,17 +64,17 @@ void simple_neighborhood_search(SCPinstance &pData,
                                 Rand& rnd)
 {
   int K = cs.K;
-  int *idx = new int [cs.K + 1];
   int c1, cov1;
   int c2, cov2;
 
-  copy_n(cs.CS, K + 1, idx);
+  vector<int> idx = cs.CS;
   random_permutation(idx, K, rnd);
   cov1 = cs.num_Cover;
 
-  for (int i=1; i <= K; ++i)
+  for (int i = 0; i < K; ++i)
   {
     c1 = idx[i];
+
     cs.remove_column(pData, c1);
 
     // 最大スコアの列
@@ -98,8 +92,6 @@ void simple_neighborhood_search(SCPinstance &pData,
       cov1 = cs.num_Cover;
     }
   } // End for i
-
-  delete [] idx;
 }
 
 
@@ -124,7 +116,7 @@ void greedy_neighborhood_search(SCPinstance &pData,
 
     if (best_cs.num_Cover < cs.num_Cover)
     {
-      best_cs.copy(cs);
+      best_cs = cs;
     }
   } // End for iter
 }
@@ -152,7 +144,7 @@ void grasp_neighborhood_search(SCPinstance &pData,
 
     if (best_cs.num_Cover < cs.num_Cover)
     {
-      best_cs.copy(cs);
+      best_cs = cs;
     }
   } // End for iter
 }
@@ -184,6 +176,7 @@ int main(int argc, char** argv)
   int seed = 0;
   Rand rnd;
   rnd.seed(seed);
+
 
   greedy_neighborhood_search(pData, K, niter, CS, Best_CS, rnd);
 

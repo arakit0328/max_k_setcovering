@@ -18,12 +18,12 @@
 //
 class SCPinstance
 {
-public:
+ public:
   int     numRows;             // The num of rows
   int     numColumns;          // The num of columns
   double  Density;             // The density of the matrix
 
-public:
+ public:
   SCPinstance(FILE *SourceFile);
   ~SCPinstance();
 
@@ -43,7 +43,7 @@ class DataException {};
 //
 class SCPsolution
 {
-public:
+ public:
   SCPinstance *SCP_Instance;
   int nRow;                     // 行数
   int nCol;                     // 列数
@@ -55,7 +55,7 @@ public:
   std::vector<int> SCORE;                // SCORE[j]: 各列のスコア
   int num_Cover;             // カバーされた行の数
 
-public:
+ public:
   SCPsolution(SCPinstance &pData, int k); // 行数，列数，K
   ~SCPsolution();
 

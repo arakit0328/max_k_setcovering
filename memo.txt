@@ -1,3 +1,9 @@
+2022/11/14 追記
+
+vectorを使って実装する形にクラス SCPinstance と SCPsolution を変更。
+SCPv.hpp と SCPv.cpp を参照。
+
+
 2022/11/01 荒木
 
 コンパイルの方法
