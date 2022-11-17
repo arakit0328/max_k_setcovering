@@ -55,17 +55,17 @@ class SCPsolution
   int num_Cover;             // カバーされた行の数
 
  public:
-  SCPsolution(SCPinstance &pData, int k); // 行数，列数，K
+  SCPsolution(SCPinstance &inst, int k); // 行数，列数，K
   ~SCPsolution();
 
   // 候補解を初期化
-  void initialize(SCPinstance &pData);
+  void initialize(SCPinstance &inst);
 
   // CSに列cを追加する
-  void add_column(SCPinstance &pData, int c);
+  void add_column(SCPinstance &inst, int c);
 
   // CSから列cを削除する
-  void remove_column(SCPinstance &pData, int c);
+  void remove_column(SCPinstance &inst, int c);
 
   // CSの中身を表示
   void print_solution();
