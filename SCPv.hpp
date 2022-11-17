@@ -52,7 +52,6 @@ class SCPsolution
   std::vector<int> CS;                   // CS: 候補解（列番号のリスト）
   std::vector<int> SOLUTION;             // SOLUTION[j] = 1: 列jが候補解に含まれる
   std::vector<int> COVERED;              // COVERED[i]: 行iがカバーされている回数
-  std::vector<int> SCORE;                // SCORE[j]: 各列のスコア
   int num_Cover;             // カバーされた行の数
 
  public:
@@ -62,12 +61,6 @@ class SCPsolution
   // 候補解を初期化
   void initialize(SCPinstance &pData);
 
-  // CSに含まれない列から最大スコアのものを選んで返す
-  int get_column_maxscore(SCPinstance &pData, Rand& rnd);
-
-  // CSに含まれない列から alpha * 最大スコア 以上のものを選んで返す
-  int get_column_grasp(SCPinstance &pData, double alpha, Rand& rnd);
-
   // CSに列cを追加する
   void add_column(SCPinstance &pData, int c);
 
@@ -76,5 +69,4 @@ class SCPsolution
 
   // CSの中身を表示
   void print_solution();
-
 };
