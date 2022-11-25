@@ -44,15 +44,14 @@ class DataException {};
 class SCPsolution
 {
  public:
-  SCPinstance *SCP_Instance;
   int nRow;                     // 行数
   int nCol;                     // 列数
   int K;                        // 選択する列の数
 
+  int num_Cover;             // カバーされた行の数
   std::vector<int> CS;                   // CS: 候補解（列番号のリスト）
   std::vector<int> SOLUTION;             // SOLUTION[j] = 1: 列jが候補解に含まれる
   std::vector<int> COVERED;              // COVERED[i]: 行iがカバーされている回数
-  int num_Cover;             // カバーされた行の数
 
  public:
   SCPsolution(SCPinstance &inst, int k); // 行数，列数，K
@@ -69,4 +68,5 @@ class SCPsolution
 
   // CSの中身を表示
   void print_solution();
+
 };

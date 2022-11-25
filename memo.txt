@@ -1,3 +1,9 @@
+2022/11/14 追記
+
+vectorを使って実装する形にクラス SCPinstance と SCPsolution を変更。
+SCPv.hpp と SCPv.cpp を参照。
+
+
 2022/11/01 荒木
 
 コンパイルの方法
@@ -31,25 +37,8 @@ http://mauricio.resende.info/src/index.html
 
 
 
-
-
 2022/11/02 荒木
 
 MkSP 解を管理するためのクラス（構造体）SCPsolution を作成。
 だいぶ見た目が変わった。やっていることは同じです。
 あと，GRASPで解を構成する方法を実装。
-
-
-2022/11/14 追記
-
-vectorを使って実装する形にクラス SCPinstance と SCPsolution を変更。
-SCPv.hpp と SCPv.cpp を参照
-
-
-2022/11/17
-
-SCPsolutionではスコアの計算をしないように変更。
-rnkc_main.cpp でスコアの計算をする関数を定義した。
-
-
-
