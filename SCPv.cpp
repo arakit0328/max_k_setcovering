@@ -115,10 +115,10 @@ SCPinstance::~SCPinstance()
 //
 
 // コンストラクタ
-SCPsolution::SCPsolution(SCPinstance &pData, int k)
+SCPsolution::SCPsolution(SCPinstance &inst, int k)
 {
-  nRow = pData.numRows;
-  nCol = pData.numColumns;
+  nRow = inst.numRows;
+  nCol = inst.numColumns;
   K = k;
   num_Cover = 0;
 
@@ -142,7 +142,7 @@ SCPsolution::~SCPsolution()
 }
 
 // 候補解を初期化
-void SCPsolution::initialize(SCPinstance &pData)
+void SCPsolution::initialize(SCPinstance &inst)
 {
   num_Cover = 0;
 
@@ -165,7 +165,8 @@ void SCPsolution::initialize(SCPinstance &pData)
 
 
 // CSに列cを追加する
-void SCPsolution::add_column(SCPinstance &pData, int c)
+void SCPsolution::add_column(SCPinstance &inst,
+                             int c)
 {
   if (SOLUTION[c])
   {
@@ -182,7 +183,7 @@ void SCPsolution::add_column(SCPinstance &pData, int c)
   CS[j] = c;
 
   // スコア更新
-  for (int r : pData.ColEntries[c]) // 列cがカバーする行
+  for (int r : inst.ColEntries[c]) // 列cがカバーする行
   {
     COVERED[r]++;
 
@@ -197,7 +198,7 @@ void SCPsolution::add_column(SCPinstance &pData, int c)
 
 
 // CSから列cを削除する
-void SCPsolution::remove_column(SCPinstance &pData, int c)
+void SCPsolution::remove_column(SCPinstance &inst, int c)
 {
   if (SOLUTION[c] == 0)
   {
@@ -211,9 +212,9 @@ void SCPsolution::remove_column(SCPinstance &pData, int c)
   int j = 0;
   while (c > CS[j]) j++;
   for (int jj = j; jj < K; ++jj) CS[jj] = CS[jj + 1];
-  CS[K-1] = pData.numColumns + 1;
+  CS[K-1] = inst.numColumns + 1;
 
-  for (int r : pData.ColEntries[c]) // 列cがカバーする行
+  for (int r : inst.ColEntries[c]) // 列cがカバーする行
   {
     COVERED[r]--;
 

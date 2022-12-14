@@ -10,10 +10,45 @@
 using namespace std;
 
 // greedy_neighborhood_search で使う繰り返しの回数
+//int niter = 1000;
 int niter = 1000;
 
 // graspで使う alpha の値
-double alpha = 0.8;
+double alpha = 0.85;
+
+
+// 解csがカバーする要素数を返す
+int check_number_of_covered_elements(SCPinstance& inst,
+                                     SCPsolution& cs)
+{
+  int cov = 0;
+  vector<int> covered(inst.numRows, 0);
+  for (int c : cs.CS)
+  {
+    if (c > inst.numColumns) continue;
+    for (int r : inst.ColEntries[c])
+    {
+      covered[r]++;
+    }
+  }
+
+  for (int r = 0; r < inst.numRows; r++)
+  {
+    if (cs.COVERED[r] == covered[r] && covered[r] > 0) cov++;
+    else if (cs.COVERED[r] != covered[r])
+    {
+      printf("cs.COVERED[%d] = %d but covered[%d] = %d\n", r, cs.COVERED[r], r, covered[r]);
+    }
+  }
+
+  if (cov == cs.num_Cover) return cov;
+  else
+  {
+    printf("The candidate solution covers %d elements, but our program coveres %d elements\n", cov, cs.num_Cover);
+    exit(1);
+  }
+}
+
 
 
 // 列cを解に追加したときのscoreの更新
@@ -26,8 +61,6 @@ void add_update_score(SCPinstance& inst,
   // スコア更新
   for (int r : inst.ColEntries[c]) // 列cがカバーする行
   {
-    cs.COVERED[r]++;
-
     // r行が初めてカバーされたら，rを含む行のスコアを減少
     if (cs.COVERED[r] == 1)
     {
@@ -42,7 +75,7 @@ void add_update_score(SCPinstance& inst,
     {
       for (int rc : inst.RowCovers[r]) // r行をカバーする列
       {
-        if (cs.SOLUTION[rc])
+        if (cs.SOLUTION[rc] && rc != c)
         {
           score[rc]++;
           break;
@@ -64,8 +97,6 @@ void remove_update_score(SCPinstance& inst,
   // スコア更新
   for (int r : inst.ColEntries[c]) // 列cがカバーする行
   {
-    cs.COVERED[r]--;
-
     // r行がカバーされなくなったら，rを含む行のスコアを増加
     if (cs.COVERED[r] == 0)
     {
@@ -199,6 +230,7 @@ SCPsolution grasp_construction(SCPinstance &inst,
     add_update_score(inst, cs, c, score);
   } // End for k
 
+
   return cs;
 }
 
@@ -242,7 +274,6 @@ void simple_neighborhood_search(SCPinstance &inst,
     cs.add_column(inst, c2);
     add_update_score(inst, cs, c2, score);
     cov2 = cs.num_Cover;
-
     if (cov1 > cov2)
     {
       cs.remove_column(inst, c2);
@@ -255,13 +286,14 @@ void simple_neighborhood_search(SCPinstance &inst,
       cov1 = cs.num_Cover;
     }
   } // End for i
+
 }
 
 
 // GRASP初期解＋単純局所探索を niter 回繰り返し
 SCPsolution grasp_neighborhood_search(SCPinstance &inst,
                                       int K,
-                                      int alpha,
+                                      double alpha,
                                       int niter,
                                       mt19937_64& rnd)
 {
@@ -294,7 +326,6 @@ SCPsolution grasp_neighborhood_search(SCPinstance &inst,
 
 
 
-
 // メイン関数
 int main(int argc, char** argv)
 {
@@ -315,13 +346,9 @@ int main(int argc, char** argv)
   SCPsolution Best_CS_glo(inst, K);
   // End Initialize;
 
-  //Rand rnd;
-  // シードを固定したいときは以下のコメントをはずす
-  //int seed = 0;
-  //rnd.seed(seed);
-
   std::random_device rnd;    // 非決定的な乱数生成器
   std::mt19937_64 mt(rnd()); // メルセンヌ・ツイスタ
+  //std::mt19937_64 mt(0); // メルセンヌ・ツイスタ
 
 
 
@@ -341,5 +368,9 @@ int main(int argc, char** argv)
     printf("%d,%d,%d\n", i, CS.num_Cover, Best_CS_glo.num_Cover);
   }
 
+  if (check_number_of_covered_elements(inst, Best_CS_glo))
+  {
+    printf("%d\n", Best_CS_glo.num_Cover);
+  }
   return 0;
 }
